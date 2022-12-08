@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import ChatItem from "../ChatItem/ChatItem";
 // import { useDispatch, useSelector } from "react-redux";
 // import { selectUser } from "../../features/userSlice";
 // import ChatItem from "./ChatItem";
 
-// import styles from "./ChatsList.module.css";
+import classes from "./ChatsList.module.css";
 
 // import { db } from "../../firebase";
 // import { doc, onSnapshot } from "firebase/firestore";
@@ -51,13 +52,16 @@ function ChatsList() {
   //     </div>
   //   );
   return (
-    <>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-      <div>hi</div>
-    </>
+    <div className={classes["chats-list"]}>
+      <ChatItem />
+      <ChatItem />
+      <ChatItem />
+      <ChatItem />
+      <ChatItem />
+      <ChatItem />
+      <ChatItem />
+      <ChatItem />
+    </div>
   );
 }
 

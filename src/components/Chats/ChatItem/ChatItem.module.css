@@ -1,0 +1,25 @@
+.chat-item {
+  /* width: 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(54, 54, 54, 0.514);
+  color: #fff;
+  padding: 8px 16px;
+}
+.chat-item__details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.chat-item__user-name {
+  font-size: 15px;
+}
+
+.chat-item__message {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 150px;
+}
