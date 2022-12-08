@@ -1,10 +1,11 @@
 import React from "react";
-// import SidebarFooter from "./SidebarFooter";
-
-import classes from "./Sidebar.module.css";
+import { BiLogOut } from "react-icons/bi";
 import ChatsList from "../../Chats/ChatsList/ChatsList";
 import Input from "../../Ui/Input/Input";
 import Avatar from "../../Ui/Avatar/Avatar";
+import Button from "../../Ui/Button/Button";
+
+import classes from "./Sidebar.module.css";
 
 function Sidebar() {
   return (
@@ -14,11 +15,11 @@ function Sidebar() {
       </header>
       <ChatsList />
       <footer className={classes["sidebar-footer"]}>
-        {/* <button
+        <Button
         //    onClick={logoutHandler}
         >
           <BiLogOut />
-        </button> */}
+        </Button>
         <Avatar />
         <p>UserName</p>
       </footer>

@@ -1,7 +1,9 @@
 import React from "react";
 import Avatar from "../../Ui/Avatar/Avatar";
+import Button from "../../Ui/Button/Button";
 import Input from "../../Ui/Input/Input";
 import Messages from "../Messages/Messages";
+import { IoMdSend } from "react-icons/io";
 
 import classes from "./ChatRoom.module.css";
 
@@ -17,11 +19,11 @@ function ChatRoom() {
         <div className={classes.input}>
           <Input />
         </div>
-        <button
+        <Button
         // onClick={handleSendMessage}
         >
-          {/* <IoMdSend className={classes["input-box__icon"]} /> */}
-        </button>
+          <IoMdSend className={classes["input-box__icon"]} />
+        </Button>
       </div>
     </div>
   );

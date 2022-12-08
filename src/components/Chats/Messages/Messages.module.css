@@ -1,0 +1,6 @@
+.container {
+  padding: 16px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
