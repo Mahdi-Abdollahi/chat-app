@@ -11,21 +11,21 @@ import { useDispatch } from "react-redux";
 import { logInUser, logOutUser } from "./features/userSlice";
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        dispatch(
-          logInUser({
-            email: authUser.email,
-            uid: authUser.uid,
-            displayName: authUser.displayName,
-            photoUrl: authUser.photoURL,
-          })
-        );
-      }
-      dispatch(logOutUser);
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (authUser) => {
+  //     if (authUser) {
+  //       dispatch(
+  //         logInUser({
+  //           email: authUser.email,
+  //           uid: authUser.uid,
+  //           displayName: authUser.displayName,
+  //           photoUrl: authUser.photoURL,
+  //         })
+  //       );
+  //     }
+  //     dispatch(logOutUser);
+  //   });
+  // }, [dispatch]);
 
   return (
     <BrowserRouter>

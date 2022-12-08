@@ -37,3 +37,11 @@
 .sidebar-user-name {
   margin-left: 8px;
 }
+
+.foundedChat {
+  width: 100%;
+  background-color: #0088cccb;
+  border-end-end-radius: 8px;
+  border-end-start-radius: 8px;
+  cursor: pointer;
+}

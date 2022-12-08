@@ -19,38 +19,40 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-import classes from "./Sidebar.module.css";
 import { db } from "../../../firebase";
+import { fetchChat } from "../../../features/chatSlice";
+import ChatItem from "../../Chats/ChatItem/ChatItem";
+
+import classes from "./Sidebar.module.css";
 
 function Sidebar() {
   const dispatch = useDispatch();
-  const [input, setInput] = useState("");
-  const [searchedUser, setSearchedUser] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [input, setInput] = useState(null);
+  const [user, setUser] = useState(null);
   const [err, setErr] = useState(false);
   const currentUser = useSelector(selectUser);
 
   const handleSearchUser = async () => {
-    const q = query(
-      collection(db, "users"),
-      where("displayName", "==", searchedUser)
-    );
+    const q = query(collection(db, "users"), where("displayName", "==", input));
 
     try {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        setSearchedUser(doc.data());
+        setUser(doc.data());
       });
     } catch (err) {
       setErr(true);
     }
   };
-
   const handleSelectChat = () => {
     const combinedId =
-      currentUser.uid > selectedUser.uid
-        ? currentUser.uid + selectedUser.uid
-        : selectedUser.uid + currentUser.uid;
+      currentUser.uid > user.uid
+        ? currentUser.uid + user.uid
+        : user.uid + currentUser.uid;
+    console.log(user);
+    dispatch(fetchChat({ usersCombinedId: combinedId, currentUser, user }));
+    setInput("");
+    setUser(null);
   };
 
   const logOutHandler = () => {
@@ -67,6 +69,11 @@ function Sidebar() {
         />
         <Button onClick={handleSearchUser}>Find</Button>
       </header>
+      {user && (
+        <div className={classes.foundedChat} onClick={handleSelectChat}>
+          <ChatItem userInfo={user} />
+        </div>
+      )}
       <ChatsList />
       <footer className={classes["sidebar-footer"]}>
         <Button onClick={logOutHandler}>

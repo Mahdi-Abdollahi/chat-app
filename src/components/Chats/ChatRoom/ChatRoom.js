@@ -6,13 +6,20 @@ import Messages from "../Messages/Messages";
 import { IoMdSend } from "react-icons/io";
 
 import classes from "./ChatRoom.module.css";
+import { useSelector } from "react-redux";
+import {
+  selectChatId,
+  selectUserChatWithin,
+} from "../../../features/chatSlice";
 
 function ChatRoom() {
+  const chatId = useSelector(selectChatId);
+  const userChatWithin = useSelector(selectUserChatWithin);
   return (
     <div className={classes.main}>
       <div className={classes.header}>
-        <Avatar />
-        <div className={classes.chatRoomName}>USERNAME</div>
+        <Avatar src={userChatWithin.photoURL} />
+        <div className={classes.chatRoomName}>{userChatWithin.displayName}</div>
       </div>
       <Messages />
       <div className={classes.textInput}>
