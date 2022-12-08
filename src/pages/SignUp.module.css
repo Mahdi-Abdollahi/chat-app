@@ -15,7 +15,7 @@
   align-items: center;
 }
 
-.formWrapper form {
+.formWrapper .form {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -29,12 +29,3 @@
 .formWrapper input::placeholder {
   color: rgb(175, 175, 175);
 }
-
-/* button {
-            background-color: #7b96ec;
-            color: white;
-            padding: 10px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-          } */

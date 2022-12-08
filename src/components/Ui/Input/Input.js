@@ -2,14 +2,14 @@ import React from "react";
 
 import classes from "./Input.module.css";
 
-function Input() {
+function Input({ onChangeHandler, value: inputValue }) {
   return (
     <div className={classes.input}>
       <input
         type="text"
         placeholder="Write a message..."
-        // value={text}
-        // onChange={(e) => inputChangeHandler(e)}
+        value={inputValue}
+        onChange={onChangeHandler}
       />
     </div>
   );
