@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BiLogOut } from "react-icons/bi";
+import { AiFillEdit } from "react-icons/ai";
 import ChatsList from "../../Chats/ChatsList/ChatsList";
 import Input from "../../Ui/Input/Input";
 import Avatar from "../../Ui/Avatar/Avatar";
@@ -22,11 +23,13 @@ import {
 import { db } from "../../../firebase";
 import { fetchChat } from "../../../features/chatSlice";
 import ChatItem from "../../Chats/ChatItem/ChatItem";
+import { useNavigate } from "react-router-dom";
 
 import classes from "./Sidebar.module.css";
 
 function Sidebar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [user, setUser] = useState(null);
   const [err, setErr] = useState(false);
@@ -57,6 +60,9 @@ function Sidebar() {
   const logOutHandler = () => {
     dispatch(logOutUser());
   };
+  const editProfileHandler = () => {
+    navigate("/profile");
+  };
 
   return (
     <aside className={classes.sidebar}>
@@ -79,6 +85,9 @@ function Sidebar() {
           <BiLogOut />
         </Button>
         <div className={classes["sidebar-user"]}>
+          <Button onClick={editProfileHandler}>
+            <AiFillEdit />
+          </Button>
           <Avatar src={currentUser.photoURL} />
           <p className={classes["sidebar-user-name"]}>
             {currentUser.displayName}

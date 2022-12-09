@@ -49,13 +49,6 @@ const initialState = {
 export const messageSlice = createSlice({
   name: "message",
   initialState,
-
-  //   extraReducers(builder) {
-  //     builder.addCase(sendMessage.fulfilled, (state, action) => {
-  //         console.log(message)
-  //       state.message = action.payload;
-  //     });
-  //   },
 });
 
 export default messageSlice.reducer;

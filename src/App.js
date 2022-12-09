@@ -9,24 +9,8 @@ import PrivateRoute from "./utils/PrivateRoute";
 import { auth, onAuthStateChanged } from "./firebase";
 import { useDispatch } from "react-redux";
 import { logInUser, logOutUser } from "./features/userSlice";
+import Profile from "./pages/Profile";
 function App() {
-  const dispatch = useDispatch();
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (authUser) => {
-  //     if (authUser) {
-  //       dispatch(
-  //         logInUser({
-  //           email: authUser.email,
-  //           uid: authUser.uid,
-  //           displayName: authUser.displayName,
-  //           photoUrl: authUser.photoURL,
-  //         })
-  //       );
-  //     }
-  //     dispatch(logOutUser);
-  //   });
-  // }, [dispatch]);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -36,6 +20,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
               </PrivateRoute>
             }
           />

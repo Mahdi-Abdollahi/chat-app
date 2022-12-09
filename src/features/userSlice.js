@@ -20,6 +20,23 @@ export const logInUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (newUserInfo) => {
+    const { newUserName, newProfilePic } = newUserInfo;
+    try {
+      await updateProfile(auth.currentUser, {
+        displayName: newUserName,
+        photoURL: newProfilePic,
+      });
+      const { email, displayName, photoURL, uid } = auth.currentUser;
+      return { email, displayName, photoURL, uid };
+    } catch (err) {
+      console.log("err: ", err);
+    }
+  }
+);
+
 export const signUpUser = createAsyncThunk(
   "user/signUpUser",
   async (userInfo) => {
@@ -100,6 +117,10 @@ export const userSlice = createSlice({
       })
       .addCase(logOutUser.fulfilled, (state, action) => {
         state.user = {};
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload;
       });
   },
 });

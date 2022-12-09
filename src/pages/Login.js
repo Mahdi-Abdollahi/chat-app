@@ -2,9 +2,10 @@ import React, { useEffect, useReducer, useState } from "react";
 import Button from "../components/Ui/Button/Button";
 import { useNavigate, Link } from "react-router-dom";
 
-import classes from "./Login.module.css";
 import { useDispatch } from "react-redux";
 import { logInUser } from "../features/userSlice";
+
+import classes from "./Login.module.css";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
