@@ -1,24 +1,11 @@
-import React, { useState } from "react";
-import { BiLogOut } from "react-icons/bi";
-import { AiFillEdit } from "react-icons/ai";
+import React, { useCallback, useState } from "react";
+
 import ChatsList from "../../Chats/ChatsList/ChatsList";
-import Input from "../../Ui/Input/Input";
-import Avatar from "../../Ui/Avatar/Avatar";
-import Button from "../../Ui/Button/Button";
+import SidebarFooter from "../SidebarFooter/SidebarFooter";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser, selectUser } from "../../../features/userSlice";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  setDoc,
-  doc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 import { db } from "../../../firebase";
 import { fetchChat } from "../../../features/chatSlice";
@@ -26,6 +13,7 @@ import ChatItem from "../../Chats/ChatItem/ChatItem";
 import { useNavigate } from "react-router-dom";
 
 import classes from "./Sidebar.module.css";
+import SidebarHeader from "../SidebarHeader/SidebarHeader";
 
 function Sidebar() {
   const dispatch = useDispatch();
@@ -57,43 +45,42 @@ function Sidebar() {
     setUser(null);
   };
 
-  const logOutHandler = () => {
+  const logOutHandler = useCallback(() => {
     dispatch(logOutUser());
-  };
-  const editProfileHandler = () => {
+  }, [dispatch]);
+
+  const editProfileHandler = useCallback(() => {
     navigate("/profile");
-  };
+  }, [navigate]);
+  console.log("SIDEBAR");
+
+  const inputChangeHandler = useCallback((e) => {
+    setInput(e.target.value);
+  }, []);
 
   return (
     <aside className={classes.sidebar}>
-      <header className={classes.header}>
-        <Input
-          placeHolder="Find a User to Chat."
-          onChangeHandler={(e) => setInput(e.target.value)}
-          value={input}
-        />
-        <Button onClick={handleSearchUser}>Find</Button>
-      </header>
+      <SidebarHeader
+        inputValue={input}
+        onChangeHandler={inputChangeHandler}
+        onSearchUserHandler={handleSearchUser}
+      />
+      {err && (
+        <div className={classes.foundedChat} onClick={handleSelectChat}>
+          Oops...User Not Found!
+        </div>
+      )}
       {user && (
         <div className={classes.foundedChat} onClick={handleSelectChat}>
           <ChatItem userInfo={user} />
         </div>
       )}
       <ChatsList />
-      <footer className={classes["sidebar-footer"]}>
-        <Button onClick={logOutHandler}>
-          <BiLogOut />
-        </Button>
-        <div className={classes["sidebar-user"]}>
-          <Button onClick={editProfileHandler}>
-            <AiFillEdit />
-          </Button>
-          <Avatar src={currentUser.photoURL} />
-          <p className={classes["sidebar-user-name"]}>
-            {currentUser.displayName}
-          </p>
-        </div>
-      </footer>
+      <SidebarFooter
+        handleEditProfile={editProfileHandler}
+        currentUser={currentUser}
+        handleLogOut={logOutHandler}
+      />
     </aside>
   );
 }

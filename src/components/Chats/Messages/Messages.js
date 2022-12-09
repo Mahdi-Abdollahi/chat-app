@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase";
 import Message from "../Message/Message";
@@ -23,6 +23,8 @@ function Messages({ chat }) {
     chat.chatId && getMessages();
   }, [chat.chatId]);
 
+  console.log("MESSAGES");
+
   return (
     <div className={classes.container}>
       {messages?.length &&
@@ -37,4 +39,4 @@ function Messages({ chat }) {
   );
 }
 
-export default Messages;
+export default memo(Messages);

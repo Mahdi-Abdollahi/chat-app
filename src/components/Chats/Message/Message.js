@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { AVATAR_PIC_BASE_URL } from "../../../data/constants";
 import { selectUserChatWithin } from "../../../features/chatSlice";
 import { selectUser } from "../../../features/userSlice";
 

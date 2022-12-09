@@ -2,9 +2,9 @@ import React, { useEffect, useReducer, useState } from "react";
 import Button from "../components/Ui/Button/Button";
 import { useNavigate, Link } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import classes from "./SignUp.module.css";
-import { selectUser, signUpUser } from "../features/userSlice";
+import { signUpUser } from "../features/userSlice";
 
 const emailReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -18,10 +18,19 @@ const emailReducer = (state, action) => {
 
 const passwordReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
-    return { value: action.val, isValid: action.val.trim().length > 6 };
+    return { value: action.val, isValid: action.val.trim().length > 5 };
   }
   if (action.type === "INPUT_BLUR") {
-    return { value: state.value, isValid: state.value.trim().length > 6 };
+    return { value: state.value, isValid: state.value.trim().length > 5 };
+  }
+  return { value: "", isValid: false };
+};
+const userNameReducer = (state, action) => {
+  if (action.type === "USER_INPUT") {
+    return { value: action.val, isValid: action.val.length > 0 };
+  }
+  if (action.type === "INPUT_BLUR") {
+    return { value: state.value, isValid: state.value.length > 0 };
   }
   return { value: "", isValid: false };
 };
@@ -29,9 +38,7 @@ const passwordReducer = (state, action) => {
 function SignUp() {
   const dispatch = useDispatch();
   const navigation = useNavigate();
-  const user = useSelector(selectUser);
   const [formIsValid, setFormIsValid] = useState(false);
-  const [userName, setUserName] = useState("");
   const [profilePic, setProfilePic] = useState("");
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -42,19 +49,24 @@ function SignUp() {
     value: "",
     isValid: null,
   });
+  const [usernameState, dispatchUsername] = useReducer(userNameReducer, {
+    value: "",
+    isValid: true,
+  });
 
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
+  const { isValid: userNameIsValid } = usernameState;
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setFormIsValid(emailIsValid && passwordIsValid);
-    }, 500);
+      setFormIsValid(emailIsValid && passwordIsValid && userNameIsValid);
+    }, 300);
 
     return () => {
       clearTimeout(identifier);
     };
-  }, [emailIsValid, passwordIsValid]);
+  }, [emailIsValid, passwordIsValid, userNameIsValid]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -62,7 +74,7 @@ function SignUp() {
       signUpUser({
         email: emailState.value,
         password: passwordState.value,
-        userName,
+        userName: usernameState.value,
         photoURL: profilePic,
       })
     ).then(() => navigation("/"));
@@ -75,6 +87,21 @@ function SignUp() {
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
   };
+  const usernameChangeHandler = (e) => {
+    dispatchUsername({ type: "USER_INPUT", val: e.target.value });
+  };
+
+  const validateEmailHandler = () => {
+    dispatchEmail({ type: "INPUT_BLUR" });
+  };
+
+  const validatePasswordHandler = () => {
+    dispatchPassword({ type: "INPUT_BLUR" });
+  };
+
+  const validateUsernameHandler = () => {
+    dispatchUsername({ type: "INPUT_BLUR" });
+  };
 
   return (
     <div className={classes.formContainer}>
@@ -86,6 +113,7 @@ function SignUp() {
             placeholder="Emain"
             value={emailState.value}
             onChange={emailChangeHandler}
+            onBlur={validateEmailHandler}
           />
           <input
             required
@@ -93,13 +121,15 @@ function SignUp() {
             placeholder="Password"
             value={passwordState.value}
             onChange={passwordChangeHandler}
+            onBlur={validatePasswordHandler}
           />
           <input
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={usernameChangeHandler}
             required
             type="text"
             placeholder="User Name"
-            value={userName}
+            value={usernameState.value}
+            onBlur={validateUsernameHandler}
           />
           <input
             onChange={(e) => setProfilePic(e.target.value)}
@@ -107,7 +137,9 @@ function SignUp() {
             placeholder="Profile Picture"
             value={profilePic}
           />
-          <Button onClick={handleSubmit}>Sign in</Button>
+          <Button disabled={!formIsValid} onClick={handleSubmit}>
+            Sign in
+          </Button>
           {/* {err && <span>Something went wrong</span>} */}
         </div>
         <p>

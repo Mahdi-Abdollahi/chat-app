@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { AVATAR_PIC_BASE_URL } from "../../../data/constants";
 import styles from "./Avatar.module.css";
 
@@ -14,4 +14,4 @@ function Avatar({ src = AVATAR_PIC_BASE_URL, alt }) {
   );
 }
 
-export default Avatar;
+export default memo(Avatar);

@@ -1,10 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
-  collection,
-  query,
-  where,
-  getDocs,
   setDoc,
   doc,
   updateDoc,
@@ -12,14 +8,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-import {
-  auth,
-  createUserWithEmailAndPassword,
-  db,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-} from "../firebase";
+import { db } from "../firebase";
 
 export const fetchChat = createAsyncThunk(
   "chat/fetchCaht",

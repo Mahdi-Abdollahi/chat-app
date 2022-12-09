@@ -19,10 +19,10 @@ const emailReducer = (state, action) => {
 
 const passwordReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
-    return { value: action.val, isValid: action.val.trim().length > 6 };
+    return { value: action.val, isValid: action.val.trim().length > 5 };
   }
   if (action.type === "INPUT_BLUR") {
-    return { value: state.value, isValid: state.value.trim().length > 6 };
+    return { value: state.value, isValid: state.value.trim().length > 5 };
   }
   return { value: "", isValid: false };
 };
@@ -48,7 +48,7 @@ function Login() {
   useEffect(() => {
     const identifier = setTimeout(() => {
       setFormIsValid(emailIsValid && passwordIsValid);
-    }, 500);
+    }, 300);
 
     return () => {
       clearTimeout(identifier);
@@ -71,6 +71,14 @@ function Login() {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
   };
 
+  const validateEmailHandler = () => {
+    dispatchEmail({ type: "INPUT_BLUR" });
+  };
+
+  const validatePasswordHandler = () => {
+    dispatchPassword({ type: "INPUT_BLUR" });
+  };
+
   return (
     <div className={classes.formContainer}>
       <div className={classes.formWrapper}>
@@ -81,6 +89,7 @@ function Login() {
             placeholder="Emain"
             value={emailState.value}
             onChange={emailChangeHandler}
+            onBlur={validateEmailHandler}
           />
           <input
             required
@@ -88,11 +97,11 @@ function Login() {
             placeholder="Password"
             value={passwordState.value}
             onChange={passwordChangeHandler}
+            onBlur={validatePasswordHandler}
           />
-          <Button disable={!formIsValid} onClick={handleSubmit}>
+          <Button disabled={!formIsValid} onClick={handleSubmit}>
             Sign in
           </Button>
-          {/* {err && <span>Something went wrong</span>} */}
         </form>
         <p>
           You don't have an account? <Link to="/signup">Sign Up</Link>

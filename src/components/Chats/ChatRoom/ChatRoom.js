@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Avatar from "../../Ui/Avatar/Avatar";
 import Button from "../../Ui/Button/Button";
 import Input from "../../Ui/Input/Input";
@@ -17,7 +17,8 @@ function ChatRoom() {
   const currentUser = useSelector(selectUser);
   const { chatId, user: userChatWithin } = chat;
   const [textInput, setTextInput] = useState("");
-  const handleSendMessage = async () => {
+
+  const handleSendMessage = useCallback(async () => {
     dispatch(
       sendMessage({
         text: textInput,
@@ -27,7 +28,9 @@ function ChatRoom() {
       })
     );
     setTextInput("");
-  };
+  }, [dispatch, chatId, currentUser.uid, userChatWithin.uid, textInput]);
+
+  console.log("CHATROOM");
 
   return (
     <div className={classes.main}>

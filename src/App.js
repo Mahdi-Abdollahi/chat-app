@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import PrivateRoute from "./utils/PrivateRoute";
-import { auth, onAuthStateChanged } from "./firebase";
-import { useDispatch } from "react-redux";
-import { logInUser, logOutUser } from "./features/userSlice";
 import Profile from "./pages/Profile";
+
 function App() {
+  // TODO: CHECK USER HAVE TOKEN IN LOCAL STORAGE
+
   return (
     <BrowserRouter>
       <Routes>

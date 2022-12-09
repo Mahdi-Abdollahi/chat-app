@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../../features/userSlice";
 import ChatItem from "../ChatItem/ChatItem";
@@ -7,12 +7,13 @@ import classes from "./ChatsList.module.css";
 
 import { db } from "../../../firebase";
 import { doc, onSnapshot } from "firebase/firestore";
-import { selectChat, selectChatId, setChat } from "../../../features/chatSlice";
+import { setChat } from "../../../features/chatSlice";
 
 function ChatsList() {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectUser);
   const [chats, setChats] = useState([]);
+
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
@@ -38,6 +39,7 @@ function ChatsList() {
       })
     );
   };
+
   const renderChats = chats?.length
     ? chats
         ?.sort((a, b) => b[1].date - a[1].date)
@@ -54,7 +56,9 @@ function ChatsList() {
         })
     : null;
 
+  console.log("CHATSLIST");
+
   return <div className={classes["chats-list"]}>{renderChats}</div>;
 }
 
-export default ChatsList;
+export default memo(ChatsList);

@@ -1,9 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import Avatar from "../../Ui/Avatar/Avatar";
 
 import classes from "./ChatItem.module.css";
 function ChatItem({ userInfo, lastMessage }) {
-  //   const { displayName, photoURL, uid } = userInfo;
   return (
     <div className={classes["chat-item"]}>
       <Avatar
@@ -22,4 +21,4 @@ function ChatItem({ userInfo, lastMessage }) {
   );
 }
 
-export default ChatItem;
+export default memo(ChatItem);

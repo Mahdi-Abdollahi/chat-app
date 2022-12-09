@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import classes from "./Button.module.css";
 
@@ -15,4 +15,4 @@ const Button = (props) => {
   );
 };
 
-export default Button;
+export default memo(Button);

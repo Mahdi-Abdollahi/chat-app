@@ -7,7 +7,10 @@ import { useNavigate, Link } from "react-router-dom";
 
 const userNameReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
-    return { value: action.val, isValid: action.val !== state.value };
+    return {
+      value: action.val,
+      isValid: action.val !== state.value && action.val.length > 0,
+    };
   }
   if (action.type === "INPUT_BLUR") {
     return { value: state.value, isValid: action.val !== state.value };
@@ -17,10 +20,16 @@ const userNameReducer = (state, action) => {
 
 const profilePicReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
-    return { value: action.val, isValid: action.val !== state.value };
+    return {
+      value: action.val,
+      isValid: action.val !== state.value && action.val.length === 0,
+    };
   }
   if (action.type === "INPUT_BLUR") {
-    return { value: state.value, isValid: action.val !== state.value };
+    return {
+      value: state.value,
+      isValid: action.val !== state.value || action.val.length === 0,
+    };
   }
   return { value: "", isValid: false };
 };
@@ -31,19 +40,21 @@ function Profile() {
   const currentUser = useSelector(selectUser);
   const [formIsValid, setFormIsValid] = useState(false);
   const [usernameState, dispatchUsername] = useReducer(userNameReducer, {
-    value: currentUser.displayName,
-    isValid: true,
+    value: currentUser.displayName || "",
+    isValid: false,
   });
   const [profilePicState, dispatchProfilePic] = useReducer(profilePicReducer, {
-    value: currentUser.photoURL,
+    value: currentUser.photoURL || "",
     isValid: true,
   });
 
   const { isValid: userNameIsValid } = usernameState;
   const { isValid: profilePicIsValid } = profilePicState;
+  console.log("userNameIsValid: ", userNameIsValid);
+  console.log("profilePicIsValid: ", profilePicIsValid);
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setFormIsValid(userNameIsValid && profilePicIsValid);
+      setFormIsValid(userNameIsValid || profilePicIsValid);
     }, 500);
 
     return () => {
@@ -70,7 +81,6 @@ function Profile() {
     event.preventDefault();
     dispatch(
       updateUser({
-        // user: currentUser,
         newUserName: usernameState.value,
         newProfilePic: profilePicState.value,
       })
@@ -90,7 +100,6 @@ function Profile() {
             onBlur={validateUsernameHandler}
           />
           <input
-            // required
             type="text"
             placeholder="Profile Picture"
             value={profilePicState.value}
@@ -100,7 +109,6 @@ function Profile() {
           <Button type="submit" disabled={!formIsValid}>
             Update Profile
           </Button>
-          {/* {err && <span>Something went wrong</span>} */}
         </form>
         <p>
           Back to ChatRoom? <Link to="/">ChatRoom</Link>
