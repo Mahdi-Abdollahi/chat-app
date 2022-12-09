@@ -27,7 +27,7 @@ import classes from "./Sidebar.module.css";
 
 function Sidebar() {
   const dispatch = useDispatch();
-  const [input, setInput] = useState(null);
+  const [input, setInput] = useState("");
   const [user, setUser] = useState(null);
   const [err, setErr] = useState(false);
   const currentUser = useSelector(selectUser);
@@ -49,7 +49,6 @@ function Sidebar() {
       currentUser.uid > user.uid
         ? currentUser.uid + user.uid
         : user.uid + currentUser.uid;
-    console.log(user);
     dispatch(fetchChat({ usersCombinedId: combinedId, currentUser, user }));
     setInput("");
     setUser(null);

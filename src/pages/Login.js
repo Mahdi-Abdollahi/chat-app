@@ -55,7 +55,6 @@ function Login() {
   }, [emailIsValid, passwordIsValid]);
 
   const handleSubmit = (e) => {
-    console.log("HANDLE SUB");
     e.preventDefault();
 
     dispatch(
@@ -70,8 +69,6 @@ function Login() {
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
   };
-
-  console.log(typeof passwordState.value);
 
   return (
     <div className={classes.formContainer}>

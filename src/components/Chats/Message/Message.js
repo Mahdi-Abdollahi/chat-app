@@ -1,20 +1,34 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { AVATAR_PIC_BASE_URL } from "../../../data/constants";
+import { selectUserChatWithin } from "../../../features/chatSlice";
+import { selectUser } from "../../../features/userSlice";
 
 import classes from "./Message.module.css";
 
-function Message({ owner }) {
+function Message({ messageInfo, isOwner }) {
+  const currentUser = useSelector(selectUser);
+  const otherUser = useSelector(selectUserChatWithin);
+  const ref = useRef();
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messageInfo]);
+
   return (
-    <div
-      //   ref={ref}
-      className={`${classes.message} ${owner && classes.owner}`}
-    >
+    <div ref={ref} className={`${classes.message} ${isOwner && classes.owner}`}>
       <div className={classes["messageInfo"]}>
-        <img src={AVATAR_PIC_BASE_URL} alt="" />
+        <img
+          src={
+            messageInfo.senderId === currentUser.uid
+              ? currentUser.photoURL
+              : otherUser.photoURL
+          }
+          alt=""
+        />
         <span>just now</span>
       </div>
       <div className={classes["messageContent"]}>
-        <p>Hi. How are you???</p>
+        <p>{messageInfo.text}</p>
       </div>
     </div>
   );

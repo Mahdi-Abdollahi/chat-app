@@ -25,19 +25,14 @@ export const fetchChat = createAsyncThunk(
   "chat/fetchCaht",
   async (chatInfo) => {
     const { usersCombinedId, currentUser, user } = chatInfo;
-    console.log("currentUser: ", currentUser);
-    console.log("user: ", user);
-    console.log("usersCombinedId: ", usersCombinedId);
     try {
       const res = await getDoc(doc(db, "chats", usersCombinedId));
-      console.log(res);
       if (!res.exists()) {
         //create a chat in chats collection
         await setDoc(doc(db, "chats", usersCombinedId), { messages: [] });
 
         //create user chats
         try {
-          console.log(currentUser.uid);
           await updateDoc(doc(db, "userChats", currentUser.uid), {
             [usersCombinedId + ".userInfo"]: {
               uid: user.uid,

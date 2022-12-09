@@ -10,8 +10,6 @@ import {
 } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 
-// export const singInWithAccessToken
-
 export const logInUser = createAsyncThunk(
   "user/logInUser",
   async (loginInfo) => {
@@ -25,7 +23,6 @@ export const logInUser = createAsyncThunk(
 export const signUpUser = createAsyncThunk(
   "user/signUpUser",
   async (userInfo) => {
-    console.log(userInfo);
     try {
       const userAuth = await createUserWithEmailAndPassword(
         auth,

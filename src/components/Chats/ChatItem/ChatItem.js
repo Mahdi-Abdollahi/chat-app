@@ -2,7 +2,7 @@ import React from "react";
 import Avatar from "../../Ui/Avatar/Avatar";
 
 import classes from "./ChatItem.module.css";
-function ChatItem({ userInfo }) {
+function ChatItem({ userInfo, lastMessage }) {
   //   const { displayName, photoURL, uid } = userInfo;
   return (
     <div className={classes["chat-item"]}>
@@ -15,10 +15,9 @@ function ChatItem({ userInfo }) {
           {userInfo.displayName}
         </h3>
         <div className={classes["chat-item__message"]}>
-          Hi, How are you? every things okey?😅
+          {lastMessage?.text || null}
         </div>
       </div>
-      <time className={classes["chat-item__time"]}>14:23</time>
     </div>
   );
 }

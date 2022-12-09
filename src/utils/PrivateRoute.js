@@ -5,7 +5,6 @@ import { selectUser } from "../features/userSlice";
 
 function PrivateRoute({ children }) {
   const user = useSelector(selectUser);
-  console.log(user);
   if (!user.uid) {
     return <Navigate to="/login" />;
   }

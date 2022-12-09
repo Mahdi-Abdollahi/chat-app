@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../../firebase";
 import Message from "../Message/Message";
 
 import classes from "./Messages.module.css";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../features/userSlice";
 
-function Messages() {
+function Messages({ chat }) {
+  const currentUser = useSelector(selectUser);
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const getMessages = () => {
+      const unSub = onSnapshot(doc(db, "chats", chat.chatId), (doc) => {
+        doc.exists() && setMessages(doc.data().messages);
+      });
+
+      return () => {
+        unSub();
+      };
+    };
+    chat.chatId && getMessages();
+  }, [chat.chatId]);
+
   return (
     <div className={classes.container}>
-      <Message owner={true} />
-      <Message />
-      <Message owner={true} />
-      <Message />
-      <Message />
-      <Message owner={true} />
-      <Message />
-      <Message />
-      <Message owner={true} />
-      <Message />
-      <Message />
+      {messages?.length &&
+        messages.map((message) => (
+          <Message
+            isOwner={message.senderId === currentUser.uid}
+            messageInfo={message}
+            key={message.id}
+          />
+        ))}
     </div>
   );
 }

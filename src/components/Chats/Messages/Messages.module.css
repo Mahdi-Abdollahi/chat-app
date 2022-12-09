@@ -1,6 +1,9 @@
+.container::-webkit-scrollbar {
+  display: none;
+}
 .container {
   padding: 16px;
-  overflow-y: scroll;
+  overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

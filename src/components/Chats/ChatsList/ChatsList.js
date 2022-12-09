@@ -7,7 +7,6 @@ import classes from "./ChatsList.module.css";
 
 import { db } from "../../../firebase";
 import { doc, onSnapshot } from "firebase/firestore";
-import { _setChats } from "../../../features/chatsSlice";
 import { selectChat, selectChatId, setChat } from "../../../features/chatSlice";
 
 function ChatsList() {
@@ -28,12 +27,6 @@ function ChatsList() {
     currentUser.uid && getChats();
   }, [currentUser, dispatch]);
 
-  useEffect(() => {
-    if (chats?.length) {
-      dispatch(_setChats(chats));
-    }
-  }, [chats, dispatch]);
-
   const handleSelect = (userInfo) => {
     dispatch(
       setChat({
@@ -45,17 +38,20 @@ function ChatsList() {
       })
     );
   };
-  const chat = useSelector(selectChat);
-  console.log("Chat: ", chat);
   const renderChats = chats?.length
-    ? chats?.map((chat) => {
-        console.log(chat);
-        return (
-          <div onClick={() => handleSelect(chat[1].userInfo)}>
-            <ChatItem userInfo={chat[1].userInfo} />
-          </div>
-        );
-      })
+    ? chats
+        ?.sort((a, b) => b[1].date - a[1].date)
+        ?.map((chat) => {
+          return (
+            <div key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
+              <ChatItem
+                userInfo={chat[1].userInfo}
+                lastMessage={chat[1]?.lastMessage || null}
+                date={chat[1]?.date || null}
+              />
+            </div>
+          );
+        })
     : null;
 
   return <div className={classes["chats-list"]}>{renderChats}</div>;

@@ -30,7 +30,6 @@ function SignUp() {
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const user = useSelector(selectUser);
-  console.log(user);
   const [formIsValid, setFormIsValid] = useState(false);
   const [userName, setUserName] = useState("");
   const [profilePic, setProfilePic] = useState("");
@@ -58,7 +57,6 @@ function SignUp() {
   }, [emailIsValid, passwordIsValid]);
 
   const handleSubmit = (e) => {
-    console.log("HANDLE SUB");
     e.preventDefault();
     dispatch(
       signUpUser({
